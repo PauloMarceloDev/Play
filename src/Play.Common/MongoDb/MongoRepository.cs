@@ -1,7 +1,7 @@
+using System.Linq.Expressions;
 using MongoDB.Driver;
-using Play.Catalog.Service.Entities;
 
-namespace Play.Catalog.Service.Repositories;
+namespace Play.Common.MongoDb;
 
 public sealed class MongoRepository<TEntity>(IMongoDatabase database, string collectionName) 
     : IRepository<TEntity> where TEntity : IEntity
@@ -12,11 +12,18 @@ public sealed class MongoRepository<TEntity>(IMongoDatabase database, string col
     public async Task<IReadOnlyCollection<TEntity>> GetAllAsync(CancellationToken cancellationToken) => 
         await _dbCollection.Find(_filterBuilder.Empty).ToListAsync(cancellationToken);
 
+    public async Task<IReadOnlyCollection<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter,
+        CancellationToken cancellationToken) =>
+        await _dbCollection.Find(filter).ToListAsync(cancellationToken);
+
     public async Task<TEntity?> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         var filter = _filterBuilder.Eq(i => i.Id, id);
         return await _dbCollection.Find(filter).FirstOrDefaultAsync(cancellationToken);
     }
+
+    public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken) => 
+        await _dbCollection.Find(filter).FirstOrDefaultAsync(cancellationToken);
 
     public async Task CreateAsync(TEntity entity, CancellationToken cancellationToken) => 
         await _dbCollection.InsertOneAsync(entity, new InsertOneOptions(), cancellationToken);

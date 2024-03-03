@@ -1,3 +1,5 @@
+using Play.Common;
+
 namespace Play.Catalog.Service.Entities;
 
 public sealed class Item : IEntity

@@ -1,6 +1,6 @@
 using Microsoft.OpenApi.Models;
 using Play.Catalog.Service.Entities;
-using Play.Catalog.Service.Repositories;
+using Play.Common.MongoDb;
 
 namespace Play.Catalog.Service;
 
