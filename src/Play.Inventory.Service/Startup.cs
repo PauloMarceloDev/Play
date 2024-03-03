@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using Play.Common.MongoDb;
+using Play.Inventory.Service.Entities;
 
 namespace Play.Inventory.Service;
 
@@ -9,7 +10,8 @@ public sealed class Startup(IConfiguration configuration)
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddMongo();
+        services.AddMongo()
+            .AddMongoRepository<InventoryItem>("inventoryItems");
         
         services.AddControllers(options =>
         {
