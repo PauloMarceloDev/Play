@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Play.Common;
+using Play.Inventory.Service.Clients;
 using Play.Inventory.Service.Entities;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -9,7 +10,8 @@ namespace Play.Inventory.Service.Controllers;
 [Produces("application/json")]
 [ApiController]
 [Route("items")]
-public sealed class ItemsController(IRepository<InventoryItem> itemsRepository) : ControllerBase
+public sealed class ItemsController(IRepository<InventoryItem> itemsRepository, CatalogClient catalogClient) 
+    : ControllerBase
 {
     [HttpGet]
     [SwaggerOperation(Summary ="Fetches the list of items in inventory by UserId.")]
@@ -22,11 +24,19 @@ public sealed class ItemsController(IRepository<InventoryItem> itemsRepository) 
             return BadRequest();
         }
 
-        var items = (await itemsRepository.GetAllAsync(i => 
+        var itemsFromCatalog = await catalogClient
+            .GetCatalogItemsAsync(cancellationToken);
+        
+        var inventoryItemDtos = (await itemsRepository.GetAllAsync(i => 
                 i.UserId == userId, cancellationToken))
-            .Select(i => i.AsDto());
+            .Select(inventoryItem =>
+            {
+                var itemCatalogById = itemsFromCatalog!.Single(itemFromCatalog => 
+                    itemFromCatalog.Id == inventoryItem.CatalogItemId);
+                return inventoryItem.AsDto(itemCatalogById.Name, itemCatalogById.Description);
+            });
 
-        return Ok(items);
+        return Ok(inventoryItemDtos);
     }
     [HttpPost]
     [SwaggerOperation(Summary ="Create item or update a item quantity in the user's inventory")]

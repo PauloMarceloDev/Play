@@ -14,8 +14,10 @@ public sealed class ItemsController(IRepository<Item> itemsRepository) : Control
     [HttpGet]
     [SwaggerOperation(Summary ="Fetches the list of items.")]
     [ProducesResponseType(typeof(IEnumerable<ItemDto>),StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<ItemDto>>> GetAsync(CancellationToken cancellationToken) => 
-        Ok((await itemsRepository.GetAllAsync(cancellationToken)).Select(i => i.AsDto()));
+    public async Task<ActionResult<IEnumerable<ItemDto>>> GetAsync(CancellationToken cancellationToken)
+    {
+        return Ok((await itemsRepository.GetAllAsync(cancellationToken)).Select(i => i.AsDto()));
+    }
 
     [HttpGet("{id:guid}")]
     [SwaggerOperation(Summary ="Retrieves an item based on its ID.")]
