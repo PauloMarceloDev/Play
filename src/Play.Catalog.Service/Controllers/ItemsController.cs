@@ -1,4 +1,6 @@
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
+using Play.Catalog.Contracts;
 using Play.Catalog.Service.Entities;
 using Play.Common;
 using Swashbuckle.AspNetCore.Annotations;
@@ -9,7 +11,8 @@ namespace Play.Catalog.Service.Controllers;
 [Produces("application/json")]
 [ApiController]
 [Route("items")]
-public sealed class ItemsController(IRepository<Item> itemsRepository) : ControllerBase
+public sealed class ItemsController(IRepository<Item> itemsRepository, IPublishEndpoint publishEndpoint) 
+    : ControllerBase
 {
     [HttpGet]
     [SwaggerOperation(Summary ="Fetches the list of items.")]
@@ -36,6 +39,10 @@ public sealed class ItemsController(IRepository<Item> itemsRepository) : Control
     {
         var item = request.AsEntity(Guid.NewGuid(), DateTimeOffset.Now);
         await itemsRepository.CreateAsync(item, cancellationToken);
+
+        await publishEndpoint.Publish(new CatalogItemCreated(item.Id, item.Name, item.Description),
+            cancellationToken);
+        
         return CreatedAtAction(nameof(GetByIdAsync), new { item.Id }, item);
     }
 
@@ -51,7 +58,10 @@ public sealed class ItemsController(IRepository<Item> itemsRepository) : Control
             return NotFound("Invalid item ID.");
         }
 
-        await itemsRepository.UpdateAsync(request.AsEntity(existingItem.Id, existingItem.CreatedDate), 
+        var updatedItem = request.AsEntity(existingItem.Id, existingItem.CreatedDate);
+        await itemsRepository.UpdateAsync(updatedItem, cancellationToken);
+
+        await publishEndpoint.Publish(new CatalogItemUpdated(updatedItem.Id, updatedItem.Name, updatedItem.Description),
             cancellationToken);
         
         return NoContent();
@@ -69,6 +79,8 @@ public sealed class ItemsController(IRepository<Item> itemsRepository) : Control
         }
 
         await itemsRepository.RemoveAsync(id, cancellationToken);
+
+        await publishEndpoint.Publish(new CatalogItemDeleted(id), cancellationToken);
         
         return NoContent();
     }
