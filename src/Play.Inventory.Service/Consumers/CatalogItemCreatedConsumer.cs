@@ -5,7 +5,8 @@ using Play.Inventory.Service.Entities;
 
 namespace Play.Inventory.Service.Consumers;
 
-public sealed class CatalogItemCreatedConsumer(IRepository<CatalogItem> repository) : IConsumer<CatalogItemCreated>
+public sealed class CatalogItemCreatedConsumer(IRepository<CatalogItem> repository)
+    : IConsumer<CatalogItemCreated>
 {
     public async Task Consume(ConsumeContext<CatalogItemCreated> context)
     {

@@ -14,21 +14,28 @@ public static class Extensions
     {
         BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
         BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
-        
+
         services.AddSingleton<IMongoDatabase>(serviceProvider =>
         {
             var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            var serviceSettings = configuration.GetRequiredSection(nameof(ServiceSettings)).Get<ServiceSettings>()!;
-            var mongoDbSettings = configuration.GetRequiredSection(nameof(MongoDbSettings)).Get<MongoDbSettings>()!;
-            
+            var serviceSettings = configuration
+                .GetRequiredSection(nameof(ServiceSettings))
+                .Get<ServiceSettings>()!;
+            var mongoDbSettings = configuration
+                .GetRequiredSection(nameof(MongoDbSettings))
+                .Get<MongoDbSettings>()!;
+
             var mongoClient = new MongoClient(mongoDbSettings.ConnectionString);
             return mongoClient.GetDatabase(serviceSettings.ServiceName);
         });
 
         return services;
     }
-    
-    public static IServiceCollection AddMongoRepository<TEntity>(this IServiceCollection services, string collectionName)
+
+    public static IServiceCollection AddMongoRepository<TEntity>(
+        this IServiceCollection services,
+        string collectionName
+    )
         where TEntity : IEntity
     {
         services.AddSingleton<IRepository<TEntity>>(serviceProvider =>

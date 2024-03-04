@@ -7,7 +7,8 @@ namespace Play.Inventory.Service.Consumers;
 
 public sealed class CatalogItemDeletedConsumer(
     IRepository<CatalogItem> catalogItemRepository,
-    IRepository<InventoryItem> inventoryItemRepository) : IConsumer<CatalogItemDeleted>
+    IRepository<InventoryItem> inventoryItemRepository
+) : IConsumer<CatalogItemDeleted>
 {
     public async Task Consume(ConsumeContext<CatalogItemDeleted> context)
     {
@@ -19,8 +20,10 @@ public sealed class CatalogItemDeletedConsumer(
             return;
         }
 
-        await inventoryItemRepository.RemoveAsync(inventoryItem => inventoryItem.CatalogItemId == item.Id,
-            context.CancellationToken);
+        await inventoryItemRepository.RemoveAsync(
+            inventoryItem => inventoryItem.CatalogItemId == item.Id,
+            context.CancellationToken
+        );
         await catalogItemRepository.RemoveAsync(item.Id, context.CancellationToken);
     }
 }

@@ -11,15 +11,13 @@ public sealed class Startup(IConfiguration configuration)
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddMongo()
-            .AddMongoRepository<Item>("items")
-            .AddMassTransitWithRabbitMq();
+        services.AddMongo().AddMongoRepository<Item>("items").AddMassTransitWithRabbitMq();
 
         services.AddControllers(options =>
         {
             options.SuppressAsyncSuffixInActionNames = false;
         });
-        
+
         services.AddSwaggerGen(c =>
         {
             c.EnableAnnotations();
@@ -33,8 +31,9 @@ public sealed class Startup(IConfiguration configuration)
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
-            app.UseSwaggerUI(c => 
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Play.Catalog.Service v1"));
+            app.UseSwaggerUI(c =>
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Play.Catalog.Service v1")
+            );
         }
 
         app.UseHttpsRedirection();

@@ -13,25 +13,32 @@ public static class Extensions
         services.AddMassTransit(configure =>
         {
             configure.AddConsumers(Assembly.GetEntryAssembly());
-            
-            configure.UsingRabbitMq((context, configurator) =>
-            {
-                var configuration = context.GetRequiredService<IConfiguration>();
-                var serviceSettings = configuration.GetRequiredSection(nameof(ServiceSettings)).Get<ServiceSettings>()!;
-                
-                var rabbitMqSettings = configuration.GetRequiredSection(nameof(RabbitMqSettings))
-                    .Get<RabbitMqSettings>();
-                
-                configurator.Host(rabbitMqSettings!.Host);
-                configurator.ConfigureEndpoints(context,
-                    new KebabCaseEndpointNameFormatter(serviceSettings!.ServiceName, false));
-                configurator.UseMessageRetry(retryConfigurator =>
+
+            configure.UsingRabbitMq(
+                (context, configurator) =>
                 {
-                    retryConfigurator.Interval(3, TimeSpan.FromSeconds(5));
-                });
-            });
+                    var configuration = context.GetRequiredService<IConfiguration>();
+                    var serviceSettings = configuration
+                        .GetRequiredSection(nameof(ServiceSettings))
+                        .Get<ServiceSettings>()!;
+
+                    var rabbitMqSettings = configuration
+                        .GetRequiredSection(nameof(RabbitMqSettings))
+                        .Get<RabbitMqSettings>();
+
+                    configurator.Host(rabbitMqSettings!.Host);
+                    configurator.ConfigureEndpoints(
+                        context,
+                        new KebabCaseEndpointNameFormatter(serviceSettings!.ServiceName, false)
+                    );
+                    configurator.UseMessageRetry(retryConfigurator =>
+                    {
+                        retryConfigurator.Interval(3, TimeSpan.FromSeconds(5));
+                    });
+                }
+            );
         });
-        
+
         return services;
     }
 }

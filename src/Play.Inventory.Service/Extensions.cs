@@ -4,10 +4,13 @@ namespace Play.Inventory.Service;
 
 public static class Extensions
 {
-    public static InventoryItemDto AsDto(this InventoryItem entity, string name, string description) => 
-        new(entity.CatalogItemId, name, description, entity.Quantity, entity.AcquiredDate);
-    
-    public static InventoryItem AsEntity(this GrantItemsDto dto, DateTimeOffset acquiredDate) => 
+    public static InventoryItemDto AsDto(
+        this InventoryItem entity,
+        string name,
+        string description
+    ) => new(entity.CatalogItemId, name, description, entity.Quantity, entity.AcquiredDate);
+
+    public static InventoryItem AsEntity(this GrantItemsDto dto, DateTimeOffset acquiredDate) =>
         new()
         {
             CatalogItemId = dto.CatalogItemId,

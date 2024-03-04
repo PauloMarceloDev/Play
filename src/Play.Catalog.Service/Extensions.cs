@@ -6,7 +6,7 @@ public static class Extensions
 {
     public static ItemDto AsDto(this Item entity) =>
         new(entity.Id, entity.Name, entity.Description, entity.Price, entity.CreatedDate);
-    
+
     public static Item AsEntity(this CreateItemDto dto, Guid id, DateTimeOffset createdDate) =>
         new()
         {
@@ -16,7 +16,7 @@ public static class Extensions
             Price = dto.Price,
             CreatedDate = createdDate
         };
-    
+
     public static Item AsEntity(this UpdateItemDto dto, Guid id, DateTimeOffset createdDate) =>
         new()
         {
