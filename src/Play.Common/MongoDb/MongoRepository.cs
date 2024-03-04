@@ -39,4 +39,7 @@ public sealed class MongoRepository<TEntity>(IMongoDatabase database, string col
         var filter = _filterBuilder.Eq(i => i.Id, id);
         await _dbCollection.DeleteOneAsync(filter, new DeleteOptions(), cancellationToken);
     }
+
+    public async Task RemoveAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken) => 
+        await _dbCollection.DeleteOneAsync(filter, new DeleteOptions(), cancellationToken);
 }

@@ -1,6 +1,6 @@
+using Amazon.Runtime.Internal.Util;
 using Microsoft.AspNetCore.Mvc;
 using Play.Common;
-using Play.Inventory.Service.Clients;
 using Play.Inventory.Service.Entities;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -10,7 +10,7 @@ namespace Play.Inventory.Service.Controllers;
 [Produces("application/json")]
 [ApiController]
 [Route("items")]
-public sealed class ItemsController(IRepository<InventoryItem> itemsRepository, CatalogClient catalogClient) 
+public sealed class ItemsController(IRepository<InventoryItem> itemsRepository, IRepository<CatalogItem> catalogItemRepository) 
     : ControllerBase
 {
     [HttpGet]
@@ -24,8 +24,7 @@ public sealed class ItemsController(IRepository<InventoryItem> itemsRepository, 
             return BadRequest();
         }
 
-        var itemsFromCatalog = await catalogClient
-            .GetCatalogItemsAsync(cancellationToken);
+        var itemsFromCatalog = await catalogItemRepository.GetAllAsync(cancellationToken);
         
         var inventoryItemDtos = (await itemsRepository.GetAllAsync(i => 
                 i.UserId == userId, cancellationToken))
