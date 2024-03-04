@@ -25,6 +25,10 @@ public static class Extensions
                 configurator.Host(rabbitMqSettings!.Host);
                 configurator.ConfigureEndpoints(context,
                     new KebabCaseEndpointNameFormatter(serviceSettings!.ServiceName, false));
+                configurator.UseMessageRetry(retryConfigurator =>
+                {
+                    retryConfigurator.Interval(3, TimeSpan.FromSeconds(5));
+                });
             });
         });
         

@@ -10,7 +10,9 @@ namespace Play.Inventory.Service.Controllers;
 [Produces("application/json")]
 [ApiController]
 [Route("items")]
-public sealed class ItemsController(IRepository<InventoryItem> itemsRepository, IRepository<CatalogItem> catalogItemRepository) 
+public sealed class ItemsController(
+    IRepository<InventoryItem> itemsRepository,
+    IRepository<CatalogItem> catalogItemRepository) 
     : ControllerBase
 {
     [HttpGet]

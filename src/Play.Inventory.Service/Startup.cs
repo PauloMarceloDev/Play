@@ -19,7 +19,7 @@ public sealed class Startup(IConfiguration configuration)
             .AddMongoRepository<CatalogItem>("catalogItems")
             .AddMassTransitWithRabbitMq();
 
-        AddCatalogClient(services);
+        // AddCatalogClient(services);
 
         services.AddControllers(options =>
         {
