@@ -1,19 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Play.Catalog.Service", "src\Play.Catalog.Service\Play.Catalog.Service.csproj", "{7EF21760-EE79-47AF-BD25-309AEEF937FC}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Play.Catalog.Service", "src\Play.Catalog.Service\Play.Catalog.Service.csproj", "{7EF21760-EE79-47AF-BD25-309AEEF937FC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3656BBC2-A4E4-4DC7-A51E-97BA81C65DCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Play.Common", "src\Play.Common\Play.Common.csproj", "{8C963893-90E0-4678-B349-ADF31783782E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Play.Common", "src\Play.Common\Play.Common.csproj", "{8C963893-90E0-4678-B349-ADF31783782E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Play.Infra", "Play.Infra", "{E91750AD-A4A1-4DFA-9FB9-F9CB02A9B2FA}"
 	ProjectSection(SolutionItems) = preProject
 		src\Play.Infra\docker-compose.yml = src\Play.Infra\docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Play.Inventory.Service", "src\Play.Inventory.Service\Play.Inventory.Service.csproj", "{A97BEE38-9D0A-4D83-BB6F-596C484742F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Play.Inventory.Service", "src\Play.Inventory.Service\Play.Inventory.Service.csproj", "{A97BEE38-9D0A-4D83-BB6F-596C484742F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Play.Catalog.Contracts", "src\Play.Catalog.Contracts\Play.Catalog.Contracts.csproj", "{BED3DDAC-9F99-416F-8F31-6557B750F8A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Play.Catalog.Contracts", "src\Play.Catalog.Contracts\Play.Catalog.Contracts.csproj", "{BED3DDAC-9F99-416F-8F31-6557B750F8A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Play.Identity.Service", "src\Play.Identity.Service\Play.Identity.Service.csproj", "{B2805B55-92AA-4FE3-AEFF-EADA80D7D85F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +42,13 @@ Global
 		{BED3DDAC-9F99-416F-8F31-6557B750F8A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BED3DDAC-9F99-416F-8F31-6557B750F8A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BED3DDAC-9F99-416F-8F31-6557B750F8A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2805B55-92AA-4FE3-AEFF-EADA80D7D85F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2805B55-92AA-4FE3-AEFF-EADA80D7D85F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2805B55-92AA-4FE3-AEFF-EADA80D7D85F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2805B55-92AA-4FE3-AEFF-EADA80D7D85F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7EF21760-EE79-47AF-BD25-309AEEF937FC} = {3656BBC2-A4E4-4DC7-A51E-97BA81C65DCF}
@@ -44,5 +56,9 @@ Global
 		{E91750AD-A4A1-4DFA-9FB9-F9CB02A9B2FA} = {3656BBC2-A4E4-4DC7-A51E-97BA81C65DCF}
 		{A97BEE38-9D0A-4D83-BB6F-596C484742F6} = {3656BBC2-A4E4-4DC7-A51E-97BA81C65DCF}
 		{BED3DDAC-9F99-416F-8F31-6557B750F8A7} = {3656BBC2-A4E4-4DC7-A51E-97BA81C65DCF}
+		{B2805B55-92AA-4FE3-AEFF-EADA80D7D85F} = {3656BBC2-A4E4-4DC7-A51E-97BA81C65DCF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8B3C364E-9E1E-488D-97ED-6C30C51190E6}
 	EndGlobalSection
 EndGlobal
