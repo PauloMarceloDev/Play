@@ -46,6 +46,12 @@ public sealed class Startup(IConfiguration configuration)
             app.UseSwaggerUI(c =>
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Play.Inventory.Service v1")
             );
+
+            app.UseCors(builder => {
+                builder.WithOrigins(Configuration["AllowedOrigin"] ?? string.Empty)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
         }
 
         app.UseHttpsRedirection();
