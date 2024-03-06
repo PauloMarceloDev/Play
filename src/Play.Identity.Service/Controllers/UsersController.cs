@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using Play.Identity.Service.Entities;
 
 using Swashbuckle.AspNetCore.Annotations;
+
+using static Duende.IdentityServer.IdentityServerConstants;
 
 namespace Play.Identity.Service.Controllers;
 
@@ -11,6 +14,7 @@ namespace Play.Identity.Service.Controllers;
 [Produces("application/json")]
 [ApiController]
 [Route("users")]
+[Authorize(Policy = LocalApi.PolicyName)]
 public sealed class UsersController(UserManager<ApplicationUser> userManager)
     : ControllerBase
 {

@@ -32,7 +32,10 @@ builder.Services.AddIdentityServer(options =>
     .AddInMemoryApiScopes(identityServerSettings.ApiScopes)
     .AddInMemoryApiResources(identityServerSettings.ApiResources)
     .AddInMemoryClients(identityServerSettings.Clients)
-    .AddInMemoryIdentityResources(identityServerSettings.IdentityResources);
+    .AddInMemoryIdentityResources(identityServerSettings.IdentityResources)
+    .AddDeveloperSigningCredential();
+
+builder.Services.AddLocalApiAuthentication();
 
 builder.Services.AddControllers();
 
