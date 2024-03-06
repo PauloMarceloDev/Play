@@ -6,6 +6,7 @@ using MongoDB.Bson.Serialization.Serializers;
 
 using Play.Common.Settings;
 using Play.Identity.Service.Entities;
+using Play.Identity.Service.HostedServices;
 using Play.Identity.Service.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +16,9 @@ var serviceSettings = builder.Configuration.GetRequiredSection(nameof(ServiceSet
 var mongoDbSettings = builder.Configuration.GetRequiredSection(nameof(MongoDbSettings)).Get<MongoDbSettings>()!;
 var identityServerSettings = builder.Configuration.GetRequiredSection(nameof(IdentityServerSettings)).Get<IdentityServerSettings>()!;
 
-builder.Services.AddDefaultIdentity<ApplicationUser>()
+builder.Services
+    .Configure<IdentitySettings>(builder.Configuration.GetRequiredSection(nameof(IdentitySettings)))
+    .AddDefaultIdentity<ApplicationUser>()
     .AddRoles<ApplicationRole>()
     .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(
         mongoDbSettings.ConnectionString,
@@ -38,6 +41,13 @@ builder.Services.AddIdentityServer(options =>
 builder.Services.AddLocalApiAuthentication();
 
 builder.Services.AddControllers();
+
+builder.Services.Configure<HostOptions>(options =>
+    {
+        options.ServicesStartConcurrently = true;
+        options.ServicesStopConcurrently = false;
+    })
+    .AddHostedService<IdentitySeedHostedService>();
 
 builder.Services.AddSwaggerGen(c =>
 {
