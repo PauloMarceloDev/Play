@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using Play.Common;
 using Play.Inventory.Service.Entities;
+
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Play.Inventory.Service.Controllers;
@@ -9,6 +12,7 @@ namespace Play.Inventory.Service.Controllers;
 [Produces("application/json")]
 [ApiController]
 [Route("items")]
+[Authorize]
 public sealed class ItemsController(
     IRepository<InventoryItem> itemsRepository,
     IRepository<CatalogItem> catalogItemRepository

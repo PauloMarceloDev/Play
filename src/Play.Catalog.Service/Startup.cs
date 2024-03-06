@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
 using Play.Catalog.Service.Entities;
+using Play.Common.Identity;
 using Play.Common.MassTransit;
 using Play.Common.MongoDb;
 using Play.Common.Settings;
@@ -16,14 +16,10 @@ public sealed class Startup(IConfiguration configuration)
     {
         var serviceSettings = Configuration.GetRequiredSection(nameof(ServiceSettings)).Get<ServiceSettings>()!;
 
-        services.AddMongo().AddMongoRepository<Item>("items").AddMassTransitWithRabbitMq();
-
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.Authority = "https://localhost:5005";
-                options.Audience = serviceSettings.ServiceName;
-            });
+        services.AddMongo()
+            .AddMongoRepository<Item>("items")
+            .AddMassTransitWithRabbitMq()
+            .AddJwtBearerAuthentication();
 
         services.AddControllers(options =>
         {
